@@ -1,20 +1,20 @@
-import './App.css'
 import { Favourites } from './Components/Favourites'
 import { Meals } from './Components/Meals'
 import { Modals } from './Components/Modals'
 import { Search } from './Components/Search'
-import { AppProvider } from './Context/Context'
+import { AppProvider, useGlobalContext } from './Context/Context'
 
 function App() {
 
+  const { showModal } = useGlobalContext()
+
   return (
     <>
-    <AppProvider>
         <Search />
         <Favourites />
         <Meals />
-        <Modals />
-      </AppProvider>
+        {showModal && <Modals />}
+      
     </>
   )
 }

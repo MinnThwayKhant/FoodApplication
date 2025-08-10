@@ -6,24 +6,34 @@ export const AppContext = createContext();
 export const AppProvider = ({children}) => {
 
     const [userData, setUserData ] = useState([])
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+    const [searchTerm, setSearchTerm ] = useState('')
     const [allUrl ,setAllUrl] = useState('https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata')
-    const [singalUrl, setSingalUrl] = useState('https://www.themealdb.com/api/json/v1/1/random.php')
 
+    const [showModal, setShowModal] = useState(true)
+
+ 
+    const fetchMeals = async (url, abortController) => {
+            setLoading(true)
+            try {
+                const response = await axios.get(url, {signal: abortController.signal})
+                if(response.data.meals){
+                    setUserData(response.data.meals)
+                } else {
+                    setUserData([])
+                }
+                
+            } catch (e) {
+                setError('Something Went Wrong ' + e.response)
+            } finally {
+                setLoading(false)
+            }
+        }
     useEffect(() => {
 
         const abortController = new AbortController();
-
-        const fetchMeals = async () => {
-            try {
-                const response = await axios.get(allUrl, {signal: abortController.signal})
-                setUserData(response.data)
-                console.log(response.data)
-            } catch (e) {
-                console.log('Something Went Wrong ' + e.response)
-            }
-        }
-
-        fetchMeals();
+        fetchMeals(allUrl, abortController);
 
         return () => {
             abortController.abort();
@@ -31,7 +41,8 @@ export const AppProvider = ({children}) => {
     }, [allUrl])
 
 
-    return (<AppContext.Provider value={{userData}}>
+    return (
+    <AppContext.Provider value={{userData, loading, error, setAllUrl, showModal, setShowModal}}>
         {children}
     </AppContext.Provider>)
 }
