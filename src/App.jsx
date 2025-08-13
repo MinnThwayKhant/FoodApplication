@@ -6,14 +6,16 @@ import { AppProvider, useGlobalContext } from './Context/Context'
 
 function App() {
 
-  const { showModal } = useGlobalContext()
+  const { showModal, favourites } = useGlobalContext()
 
   return (
     <>
+    <div className='relative pt-15'>
         <Search />
-        <Favourites />
+        {favourites.length > 0 && <Favourites />}
         <Meals />
         {showModal && <Modals />}
+    </div>
       
     </>
   )

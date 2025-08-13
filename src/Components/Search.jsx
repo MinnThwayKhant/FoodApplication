@@ -18,7 +18,7 @@ export const Search = () => {
 
 
   return (
-    <div className='my-15 mx-25'>
+    <div className='mx-25'>
         <form onSubmit={handleSubmit}>
             <input type='text' placeholder='Type Favourite Meals' className=' rounded-md outline-none px-4 py-[7px] bg-amber-100' value={text} onChange={handleChange} />
             <button type='submit' className='py-[6px] px-4 bg-amber-800 text-amber-200 rounded ml-2 hover:opacity-80'>Search</button>
